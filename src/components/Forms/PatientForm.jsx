@@ -16,7 +16,7 @@ const PatientForm = () => {
   });
 
   const handleChange = (e) => {
-    const { name, value } = e.target;
+    const { name, value } = e.target;  //Destructuring
     setFormData((prev) => ({ ...prev, [name]: value }));
   };
 

@@ -4,7 +4,7 @@ import { UserContext } from "../../context/UserContext";
 import EditUserModal from "../Modals/EditUserModal";
 
 const UsersTable = () => {
-  const { users, deleteUser, setUsers } = useContext(UserContext);
+  const { users, editUser, deleteUser } = useContext(UserContext);
   const [selectedUser, setSelectedUser] = useState(null);
   const [showModal, setShowModal] = useState(false);
 
@@ -14,9 +14,9 @@ const UsersTable = () => {
   };
 
   const handleSave = (updatedUser) => {
-    const updatedUsers = [...users];
-    updatedUsers[selectedUser.index] = updatedUser;
-    setUsers(updatedUsers);
+    // اینجا به جای setUsers مستقیم از editUser استفاده می‌کنیم
+    editUser(selectedUser.index, updatedUser);
+    setShowModal(false);
   };
 
   return (
@@ -57,12 +57,14 @@ const UsersTable = () => {
       </table>
 
       {/* مودال ویرایش */}
-      <EditUserModal
-        show={showModal}
-        onClose={() => setShowModal(false)}
-        user={selectedUser}
-        onSave={handleSave}
-      />
+      {selectedUser && (
+        <EditUserModal
+          show={showModal}
+          onClose={() => setShowModal(false)}
+          user={selectedUser}
+          onSave={handleSave}
+        />
+      )}
     </div>
   );
 };

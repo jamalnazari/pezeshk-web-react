@@ -11,13 +11,11 @@ export const UserProvider = ({ children }) => {
     setUsers((prev) => [...prev, { ...user, active: true }]);
   };
 
-  const editUser = (index) => {
-    const updatedUsers = [...users];
-    updatedUsers[index].name = prompt("نام جدید:", updatedUsers[index].name);
-    updatedUsers[index].email = prompt("ایمیل جدید:", updatedUsers[index].email);
-    updatedUsers[index].phone = prompt("تلفن جدید:", updatedUsers[index].phone);
-    setUsers(updatedUsers);
-  };
+ const editUser = (index, updatedUser) => {
+  const updatedUsers = [...users];
+  updatedUsers[index] = updatedUser;
+  setUsers(updatedUsers);
+};
 
   const deleteUser = (index) => {
     const updatedUsers = users.filter((_, i) => i !== index);

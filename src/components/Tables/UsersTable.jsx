@@ -1,0 +1,70 @@
+import React, { useContext, useState } from "react";
+import Button from "../UI/Button";
+import { UserContext } from "../../context/UserContext";
+import EditUserModal from "../Modals/EditUserModal";
+
+const UsersTable = () => {
+  const { users, deleteUser, setUsers } = useContext(UserContext);
+  const [selectedUser, setSelectedUser] = useState(null);
+  const [showModal, setShowModal] = useState(false);
+
+  const handleEdit = (user, index) => {
+    setSelectedUser({ ...user, index });
+    setShowModal(true);
+  };
+
+  const handleSave = (updatedUser) => {
+    const updatedUsers = [...users];
+    updatedUsers[selectedUser.index] = updatedUser;
+    setUsers(updatedUsers);
+  };
+
+  return (
+    <div className="container mt-4">
+      <h4 className="mb-3">لیست کاربران</h4>
+      <table className="table table-striped">
+        <thead>
+          <tr>
+            <th>نام</th>
+            <th>ایمیل</th>
+            <th>تلفن</th>
+            <th>نوع کاربر</th>
+            <th>وضعیت</th>
+            <th>عملیات</th>
+          </tr>
+        </thead>
+        <tbody>
+          {users.length === 0 ? (
+            <tr>
+              <td colSpan="6" className="text-center">هیچ کاربری ثبت نشده است</td>
+            </tr>
+          ) : (
+            users.map((user, i) => (
+              <tr key={i}>
+                <td>{user.name}</td>
+                <td>{user.email}</td>
+                <td>{user.phone}</td>
+                <td>{user.userType}</td>
+                <td>{user.active ? "فعال" : "غیرفعال"}</td>
+                <td>
+                  <Button variant="warning" size="sm" onClick={() => handleEdit(user, i)}>ویرایش</Button>{" "}
+                  <Button variant="danger" size="sm" onClick={() => deleteUser(i)}>حذف</Button>
+                </td>
+              </tr>
+            ))
+          )}
+        </tbody>
+      </table>
+
+      {/* مودال ویرایش */}
+      <EditUserModal
+        show={showModal}
+        onClose={() => setShowModal(false)}
+        user={selectedUser}
+        onSave={handleSave}
+      />
+    </div>
+  );
+};
+
+export default UsersTable;

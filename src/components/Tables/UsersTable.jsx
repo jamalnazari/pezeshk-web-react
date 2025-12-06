@@ -14,8 +14,7 @@ const UsersTable = () => {
   };
 
   const handleSave = (updatedUser) => {
-    // اینجا به جای setUsers مستقیم از editUser استفاده می‌کنیم
-    editUser(selectedUser.index, updatedUser);
+    editUser(selectedUser.index, updatedUser); // هماهنگ با Context
     setShowModal(false);
   };
 
@@ -25,6 +24,7 @@ const UsersTable = () => {
       <table className="table table-striped">
         <thead>
           <tr>
+            <th>ID</th>
             <th>نام</th>
             <th>ایمیل</th>
             <th>تلفن</th>
@@ -36,11 +36,12 @@ const UsersTable = () => {
         <tbody>
           {users.length === 0 ? (
             <tr>
-              <td colSpan="6" className="text-center">هیچ کاربری ثبت نشده است</td>
+              <td colSpan="7" className="text-center">هیچ کاربری ثبت نشده است</td>
             </tr>
           ) : (
             users.map((user, i) => (
-              <tr key={i}>
+              <tr key={user.id || i}>
+                <td>{user.id}</td>
                 <td>{user.name}</td>
                 <td>{user.email}</td>
                 <td>{user.phone}</td>

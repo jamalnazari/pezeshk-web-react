@@ -11,11 +11,11 @@ export const UserProvider = ({ children }) => {
     setUsers((prev) => [...prev, { ...user, active: true }]);
   };
 
- const editUser = (index, updatedUser) => {
-  const updatedUsers = [...users];
-  updatedUsers[index] = updatedUser;
-  setUsers(updatedUsers);
-};
+  const editUser = (index, updatedUser) => {
+    const updatedUsers = [...users];
+    updatedUsers[index] = updatedUser;
+    setUsers(updatedUsers);
+  };
 
   const deleteUser = (index) => {
     const updatedUsers = users.filter((_, i) => i !== index);

@@ -1,31 +1,57 @@
-import './App.css'
-import {BrowserRouter as Router , Routes ,Route} from 'react-router-dom'
-import PatientForm from "./components/Forms/PatientForm"
-import Parvandeh from './components/Forms/Parvandeh'
-import SharhHal from './components/Forms/SharhHal'
-import NobatDehi from './components/Forms/NobatDehi'
-import { UserProvider } from './context/UserContext'
-import UsersTable from './components/Tables/UsersTable'
-import UserForm from './components/Forms/UserForm'
+import React from "react";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import ProtectedRoute from "./components/routes/ProtectedRoute";
+import Dashboard from "./pages/Dashboard";
+import Unauthorized from "./pages/Unauthorized";
+import Login from "./pages/Login";
+import UsersTable from "./components/Tables/UsersTable";
+import Appointments from "./pages/Appointments";
+import PatientForm from "./components/Forms/PatientForm";
+import UserForm from "./components/Forms/UserForm";
+
 function App() {
-
   return (
+    <Router>
+      <Routes>
+        {/* صفحات عمومی */}
+        <Route path="/login" element={<Login />} />
+        <Route path="/dashboard" element={<Dashboard />} />
 
-    <div>
-      <UserProvider>
-        <Router>
-          <Routes>
-            <Route path='/Patient-Form' element={<PatientForm/>}/>
-            <Route path='/Parvandeh' element={<Parvandeh/>}/>
-            <Route path='/SharhHal' element={<SharhHal/>}/>
-            <Route path='/NobatDehi' element={<NobatDehi/>}/>
-            <Route path='UsersTable' element={<UsersTable/>}/>
-            <Route path='UserForm' element={<UserForm/>}/>
-          </Routes>
-        </Router>
-      </UserProvider>
-    </div>
-  )
+        {/* فقط سوپرادمین */}
+        <Route
+          path="/users"
+          element={
+            <ProtectedRoute allowedRoles={["superadmin"]}>
+              <UsersTable />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* فقط پذیرش و ادمین */}
+        <Route
+          path="/appointments"
+          element={
+            <ProtectedRoute allowedRoles={["admin", "reception"]}>
+              <Appointments />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* فقط کاربر اپ */}
+        <Route
+          path="/patient-form"
+          element={
+            <ProtectedRoute allowedRoles={["client"]}>
+              <PatientForm />
+            </ProtectedRoute>
+          }
+        />
+
+        {/* صفحه unauthorized */}
+        <Route path="/unauthorized" element={<Unauthorized />} />
+      </Routes>
+    </Router>
+  );
 }
 
-export default App
+export default App;

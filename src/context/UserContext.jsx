@@ -1,12 +1,12 @@
-import React, { createContext, useEffect, useState } from "react";
+import { createContext, useState } from "react";
 
-// ایجاد context
 export const UserContext = createContext();
 
-// Provider برای مدیریت کاربران
 export const UserProvider = ({ children }) => {
   const [users, setUsers] = useState([]);
+  const [currentUser, setCurrentUser] = useState(null); //  کاربر فعلی
 
+  // مدیریت لیست کاربران
   const addUser = (user) => {
     setUsers((prev) => [...prev, { ...user, active: true }]);
   };
@@ -22,8 +22,14 @@ export const UserProvider = ({ children }) => {
     setUsers(updatedUsers);
   };
 
+  // مدیریت کاربر فعلی (login/logout)
+  const loginUser = (user) => setCurrentUser(user);
+  const logoutUser = () => setCurrentUser(null);
+
   return (
-    <UserContext.Provider value={{ users, addUser, editUser, deleteUser }}>
+    <UserContext.Provider
+      value={{ users, addUser, editUser, deleteUser, currentUser, loginUser, logoutUser }}
+    >
       {children}
     </UserContext.Provider>
   );

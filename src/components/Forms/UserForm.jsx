@@ -4,7 +4,7 @@ import Button from "../UI/Button";
 import { UserContext } from "../../context/UserContext";
 
 const UserForm = () => {
-  const { addUser , users } = useContext(UserContext);
+  const { addUser } = useContext(UserContext);
   const [userData, setUserData] = useState({
     name: "",
     email: "",
@@ -16,18 +16,45 @@ const UserForm = () => {
   const handleChange = (e) => {
     const { name, value } = e.target;
     setUserData((prev) => ({ ...prev, [name]: value }));
-    
-    
   };
 
+  const validateForm = () => {
+    if (!userData.name || !userData.email || !userData.phone || !userData.password || !userData.userType) {
+      alert("لطفاً همه فیلدها را پر کنید");
+      return false;
+    }
+
+    if (!/\S+@\S+\.\S+/.test(userData.email)) {
+      alert("ایمیل معتبر نیست");
+      return false;
+    }
+
+    if (!/^\d{10,11}$/.test(userData.phone)) {
+      alert("شماره تلفن باید فقط عدد و 10 یا 11 رقم باشد");
+      return false;
+    }
+
+    if (userData.password.length < 6) {
+      alert("رمز عبور باید حداقل 6 کاراکتر باشد");
+      return false;
+    }
+
+    return true;
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-    addUser(userData);
-    console.log(userData)
+
+    if (!validateForm()) return;
+
+    // اضافه کردن شناسه یکتا
+    const newUser = { ...userData, id: Date.now(), active: true };
+
+    addUser(newUser);
+    alert("کاربر با موفقیت ثبت شد ✅");
+
+    // پاک کردن فرم
     setUserData({ name: "", email: "", phone: "", password: "", userType: "" });
-    console.log(users);
-    
   };
 
   return (

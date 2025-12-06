@@ -1,14 +1,14 @@
 import React from "react";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import ProtectedRoute from "./components/routes/ProtectedRoute";
-import Dashboard from "./pages/Dashboard";
+import Dashboard from "./pages/Dashboard-D";
 import Unauthorized from "./pages/Unauthoriz";
 import UsersTable from "./components/Tables/UsersTable";
 import Appointments from "./pages/Appointments";
 import PatientForm from "./components/Forms/PatientForm";
 import UserForm from "./components/Forms/UserForm";
 import { UserProvider } from "./context/UserContext";
-
+import LoginForm from "./components/Forms/Loginform";
 function App() {
   return (
     <UserProvider>
@@ -17,6 +17,7 @@ function App() {
           {/* صفحات عمومی */}
           <Route path="/login" element={<UserForm />} />
           <Route path="/dashboard" element={<Dashboard />} />
+          <Route path="/register" element={<LoginForm />} />
 
           {/* فقط سوپرادمین */}
           <Route

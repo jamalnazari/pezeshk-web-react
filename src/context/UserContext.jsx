@@ -52,7 +52,7 @@ export const UserProvider = ({ children }) => {
   const deleteUser = async (index) => {
     try {
       const userId = users[index].id;
-      await fetch(http://localhost:3001/users/${userId}, { method: "DELETE" });
+      await fetch(`http://localhost:3001/users/${userId}`, { method: "DELETE" });
 
       const newUsers = users.filter((_, i) => i !== index);
       setUsers(newUsers);
